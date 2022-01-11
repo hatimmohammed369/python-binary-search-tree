@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, List
 from tree_node import node
 
 
@@ -6,7 +6,7 @@ from tree_node import node
 #   duplicates are allowed
 #
 # attributes:
-#   root, size, get_node, insert, remove
+#   root, size, get_node, insert, remove, generate_list_view
 # 
 # root:
 #   default: node(parent=None, value=None, left=None, right=None, id='')
@@ -19,6 +19,10 @@ from tree_node import node
 # get_node:
 #   method
 #   given an item, like 4, returns the first node(n) with attribute 
+#
+# generate_list_view:
+#   method
+#   returns list containing all nodes in tree
 
 
 class bs_tree:
@@ -103,3 +107,27 @@ class bs_tree:
         # deletion complete
         self.size = self.size - 1
         return deleted_value
+    
+    
+    def generate_list_view(self) -> List[node]:
+        ls: List[node] = []
+        begin, end = 0, 1
+        while len(ls) < self.size:
+            if len(ls) == 0:
+                ls.append(self.root)
+            else:
+                old_length = len(ls)
+                for n in ls[begin:end]:
+                    child_left = n.left
+                    if child_left is not None:
+                        ls.append(child_left)
+                    
+                    child_right = n.right
+                    if child_right is not None:
+                        ls.append(child_right)
+                begin, end = old_length, len(ls)
+        return ls
+
+
+if __name__ == '__main__':
+    print(bs_tree([6, 0, 7, 5, 1, 4, 8, 9, 3, 2]).generate_list_view())
