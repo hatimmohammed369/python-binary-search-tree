@@ -13,8 +13,8 @@
 # so does this one
 # 
 # id:
-# a string basically indicating if this node is left node (id='L')
-# or a right node (id='R')
+# a string basically indicating if this node is left node (id='#L')
+# or a right node (id='#R')
 # default: '', in case this node is the root
 # 
 # * EXCEPT FOR (id), ALL ATTRIBUTES HAVE (NONE) AS THEIR DEFAULT
@@ -32,3 +32,10 @@ class node:
         self.left: node = left
         self.right: node = right
         self.id: str = id
+    
+    def __repr__(self) -> str:
+        p = None if self.parent is None else repr(self.parent.value)
+        v = repr(self.value)
+        l = None if self.left is None else repr(self.left.value)
+        r = None if self.right is None else repr(self.right.value)
+        return f'({p})=>({l}, {v}{self.id}, {r})'
