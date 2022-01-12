@@ -54,7 +54,7 @@ class bs_tree:
                     current = current.right
         return current
 
-    
+
     def insert(self, item):
         if self.size == 0:
             self.root.value = item
@@ -95,7 +95,7 @@ class bs_tree:
             L, R = item_node.left is not None, item_node.right is not None
             if L and R:
                 # BOTH RIGHT AND LEFT
-
+                
                 # search for the largest node in the left subtree
                 # or the smallest node in the right subtree
                 
@@ -144,8 +144,8 @@ class bs_tree:
         # deletion complete
         self.size = self.size - 1
         return deleted_value
-    
-    
+
+
     def generate_list_view(self) -> List[node]:
         ls: List[node] = []
         begin, end = 0, 1
@@ -164,10 +164,15 @@ class bs_tree:
                         ls.append(child_right)
                 begin, end = old_length, len(ls)
         return ls
-    
-    
+
+
+    def generate_value_view(self) -> List:
+        return [n.value for n in self.generate_list_view()]
+
+
     def __repr__(self) -> str:
-        return str(self.generate_list_view())
+        # return str(self.generate_list_view())
+        return ''
 # end of class bs_tree
 
 if __name__ == '__main__':
@@ -178,3 +183,4 @@ if __name__ == '__main__':
     
     for item in p:
         t.remove(item)
+        t.generate_list_view()
