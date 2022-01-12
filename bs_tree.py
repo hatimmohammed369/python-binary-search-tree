@@ -103,20 +103,22 @@ class bs_tree:
                 item_node.value = left_largest.value
                 
                 # remove left_largest
-                leftL, leftR = left_largest.left is not None, left_largest.right is not None
+                leftL = left_largest.left is not None
                 # since left_largest is the largest node if the left subtree
                 # it must be as deep as possible and as far right as possible
                 # so left_largest.id='#R'
-                if leftL and not leftR:
-                    # left_largest has a left node but no right node
+                # 
+                # we go as far right as possible, so left_largest.right is always None
+                # 
+                # so left_largest might have a left child, but never a right one, or no children at all
+                
+                if leftL:
+                    # in case left_largest has a left child
                     left_largest.parent.right = left_largest.left
                     left_largest.parent.right.id = '#R'
-                elif not leftR and leftR:
-                    # left_largest has no left node but a right node
-                    left_largest.parent.right = left_largest.right
-                    left_largest.parent.right.id = '#R'
                 else:
-                    # no children, just delete
+                    # left_largest has no children
+                    # so just remove left_largest
                     left_largest.parent.right.value = None
                     left_largest.parent.right = None
             elif L:
