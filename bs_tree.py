@@ -90,6 +90,41 @@ class bs_tree:
         if self.size == 1 and self.root.value == item:
             self.root.value = None
         elif item_node is not None: # then we can delete
+            L, R = item_node.left is not None, item_node.right is not None
+            if L and R:
+                # search for the largest node in the left subtree
+                # or the smallest node in the right subtree
+                
+                # I will search for the largest node in the left subtree
+                left_largest = item_node.left
+                while left_largest.right is not None:
+                    left_largest = left_largest.right
+                
+                item_node.value = left_largest.value
+                
+                # remove left_largest
+                leftL, leftR = left_largest.left is not None, left_largest.right is not None
+                # since left_largest is the largest node if the left subtree
+                # it must be as deep as possible and as far right as possible
+                # so left_largest.id='#R'
+                if leftL and not leftR:
+                    # left_largest has a left node but no right node
+                    left_largest.parent.right = left_largest.left
+                    left_largest.parent.right.id = '#R'
+                elif not leftR and leftR:
+                    # left_largest has no left node but a right node
+                    left_largest.parent.right = left_largest.left
+                    left_largest.parent.right.id = '#R'
+                else:
+                    # no children, just delete
+                    left_largest.parent.right.value = None
+                    left_largest.parent.right = None
+                pass
+            elif L:
+                pass
+            else:
+                # just R
+                pass
             pass
         # deletion complete
         self.size = self.size - 1
