@@ -32,8 +32,12 @@ class bs_tree:
         if isinstance(init, Iterable):
             for item in init:
                 self.insert(item)
-    
-    
+
+
+    def __len__(self):
+        return self.size
+
+
     def get_node(self, item) -> node:
         current = self.root
         while True:
