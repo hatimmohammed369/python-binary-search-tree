@@ -113,13 +113,12 @@ class bs_tree:
                     left_largest.parent.right.id = '#R'
                 elif not leftR and leftR:
                     # left_largest has no left node but a right node
-                    left_largest.parent.right = left_largest.left
+                    left_largest.parent.right = left_largest.right
                     left_largest.parent.right.id = '#R'
                 else:
                     # no children, just delete
                     left_largest.parent.right.value = None
                     left_largest.parent.right = None
-                pass
             elif L:
                 pass
             else:
