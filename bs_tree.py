@@ -127,7 +127,15 @@ class bs_tree:
                         ls.append(child_right)
                 begin, end = old_length, len(ls)
         return ls
-
+    
+    
+    def __repr__(self) -> str:
+        return str(self.generate_list_view())
+# end of class bs_tree
 
 if __name__ == '__main__':
-    print(bs_tree([6, 0, 7, 5, 1, 4, 8, 9, 3, 2]).generate_list_view())
+    p = [6, 0, 7, 5, 1, 4, 8, 9, 3, 2]
+    t = bs_tree()
+    for item in p:
+        t.insert(item)
+    print(t.generate_list_view())
