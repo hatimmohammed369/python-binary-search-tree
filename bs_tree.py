@@ -82,32 +82,15 @@ class bs_tree:
         # insertion complete!
         self.size += 1 # dont forget to increase the size!!!!!!!!
         return self
-    
-    
+
+
     def remove(self, item):
         item_node = self.get_node(item)
         deleted_value = item_node.value
         if self.size == 1 and self.root.value == item:
             self.root.value = None
         elif item_node is not None: # then we can delete
-            L, R = item_node.left is not None, self.right is not None
-            if L or (L and R):
-                pass
-            else:
-                # item_node has a right child only
-                
-                if item_node.id == '':
-                    # item_node is root
-                    self.root = item_node.right
-                    self.root.id = ''
-                elif item_node.id == '#L':
-                    # item_node is left node
-                    item_node.parent.left = item_node.right
-                    item_node.parent.left.id = '#L'
-                else:
-                    # item_node is a right node
-                    item_node.parent.right = item_node.right
-                    item_node.parent.right = '#R'
+            pass
         # deletion complete
         self.size = self.size - 1
         return deleted_value
