@@ -87,62 +87,68 @@ class bs_tree:
 
 
     def remove(self, item):
-        item_node = self.get_node(item)
-        deleted_value = item_node.value
-        if self.size == 1 and self.root.value == item:
-            self.root.value = None
-        elif item_node is not None: # then we can delete
-            L, R = item_node.left is not None, item_node.right is not None
-            if L and R:
-                # BOTH RIGHT AND LEFT
-                
-                # search for the largest node in the left subtree
-                # or the smallest node in the right subtree
-                
-                # I will search for the largest node in the left subtree
-                left_largest = item_node.left
-                while left_largest.right is not None:
-                    left_largest = left_largest.right
-                
-                item_node.value = left_largest.value
-                
-                # remove left_largest
-                leftL = left_largest.left is not None
-                # since left_largest is the largest node if the left subtree
-                # it must be as deep and far right as possible
-                # so left_largest.id='#R'
-                # 
-                # we go as far right as possible, so left_largest.right is always None
-                # 
-                # so left_largest might have a left child, but never a right one, or no children at all
-                
-                if leftL:
-                    # in case left_largest has a left child
-                    left_largest.parent.right = left_largest.left
-                    left_largest.parent.right.id = '#R'
+        if self.size != 0:
+            item_node = self.get_node(item)
+            deleted_value = item_node.value
+            if self.size == 1 and self.root.value == item:
+                self.root.value = None
+            elif item_node is not None: # then we can delete
+                L, R = item_node.left is not None, item_node.right is not None
+                if L and R:
+                    # BOTH RIGHT AND LEFT
+                    
+                    # search for the largest node in the left subtree
+                    # or the smallest node in the right subtree
+                    
+                    # I will search for the largest node in the left subtree
+                    left_largest = item_node.left
+                    while left_largest.right is not None:
+                        left_largest = left_largest.right
+                    
+                    item_node.value = left_largest.value
+                    
+                    # remove left_largest
+                    leftL = left_largest.left is not None
+                    # since left_largest is the largest node if the left subtree
+                    # it must be as deep and far right as possible
+                    # so left_largest.id='#R'
+                    # 
+                    # we go as far right as possible, so left_largest.right is always None
+                    # 
+                    # so left_largest might have a left child, but never a right one, or no children at all
+                    
+                    if leftL:
+                        # in case left_largest has a left child
+                        left_largest.parent.right = left_largest.left
+                        left_largest.parent.right.parent = left_largest.parent
+                        left_largest.parent.right.id = '#R'
+                    else:
+                        # left_largest has no children
+                        # so just remove left_largest
+                        left_largest.parent.right.value = None
+                        left_largest.parent.right = None
+                elif L:
+                    # item_node has LEFT child but NO right child
+                    if item_node.id == '#L':
+                        item_node.parent.left = item_node.left
+                        item_node.parent.left.parent = item_node.parent
+                    else:
+                        item_node.parent.right = item_node.left
+                        item_node.parent.right.parent = item_node.parent
+                        item_node.parent.right.id = '#R'
                 else:
-                    # left_largest has no children
-                    # so just remove left_largest
-                    left_largest.parent.right.value = None
-                    left_largest.parent.right = None
-            elif L:
-                # item_node has LEFT child but NO right child
-                if item_node.id == '#L':
-                    item_node.parent.left = item_node.left
-                else:
-                    item_node.parent.right = item_node.left
-                    item_node.parent.right.id = '#R'
-            else:
-                # NO left just RIGHT
-                if item_node.id == '#L':
-                    item_node.parent.left = item_node.right
-                    item_node.parent.left.id = '#L'
-                else:
-                    item_node.parent.right = item_node.right
-            # if L and R:
-        # end elif item_node is not None
-        # deletion complete
-        self.size = self.size - 1
+                    # NO left just RIGHT
+                    if item_node.id == '#L':
+                        item_node.parent.left = item_node.right
+                        item_node.parent.left.parnet = item_node.right
+                        item_node.parent.left.id = '#L'
+                    else:
+                        item_node.parent.right = item_node.right
+                        item_node.parent.right.parnet = item_node.right
+                # if L and R:
+            # end elif item_node is not None
+            # deletion complete
+            self.size = self.size - 1
         return deleted_value
 
 
@@ -182,5 +188,5 @@ if __name__ == '__main__':
         t.insert(item)
     
     for item in p:
+        print(t.generate_list_view(), '\n')
         t.remove(item)
-        t.generate_list_view()
