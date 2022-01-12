@@ -87,8 +87,28 @@ class bs_tree:
 
 
     def remove(self, doomed_item):
-        pass
-        return
+        deleted_item = None
+        if self.size != 0:
+            # tree is not empty, so we can remove things
+            doomed_item_node = self.get_node(doomed_item)
+            if doomed_item_node is not None:
+                # now what we want to remove is actually in the tree, so we can remove it
+                deleted_item = doomed_item_node.value
+                doomed_id = doomed_item_node.id
+                L, R = doomed_item_node.left is not None, doomed_item_node.right is not None
+                if L and R:
+                    # BOTH CHILDREN ARE NOT NONE
+                    pass
+                elif L:
+                    # LEFT is NOT None, RIHGT is NONE
+                    pass 
+                else:
+                    # LEFT is NONE, RIGHT is NOT NONE
+                    pass
+                self.size = self.size - 1 # we have effectively removed {doomed_item}
+            # end if doomed_item_node is not None:
+        # end if self.size != 0
+        return deleted_item
 
 
     def generate_list_view(self) -> List[node]:
