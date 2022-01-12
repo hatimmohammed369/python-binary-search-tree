@@ -44,9 +44,11 @@ class bs_tree:
             if current is None or current.value is None:
                 break # because it's not here
             else:
-                if item <= current.value:
+                if item < current.value:
                     # GO LEFT
                     current = current.left
+                elif item == current.value:
+                    break # found it!
                 else:
                     # GO RIGHT
                     current = current.right
@@ -173,4 +175,6 @@ if __name__ == '__main__':
     t = bs_tree()
     for item in p:
         t.insert(item)
-    print(t.generate_list_view())
+    
+    for item in p:
+        t.remove(item)
