@@ -140,11 +140,20 @@ class bs_tree:
                         if doomed_item_node.parent.left is not None:
                             doomed_item_node.parent.left.parent = doomed_item_node.parent
                             doomed_item_node.parent.left.id = '#L'
-                    else:
+                    elif doomed_id == '#R':
                         doomed_item_node.parent.right = successor
                         if doomed_item_node.parent.right is not None:
                             doomed_item_node.parent.right.parent = doomed_item_node.parent
                             doomed_item_node.parent.right.id = '#R'
+                    else:
+                        # a SINGLE-NODE root is doomed
+                        if self.size == 1:
+                            self.root.value = None
+                        else:
+                            self.root = successor
+                            self.root.parent.value = None
+                            self.root.parent = None
+                        self.root.id = ''
                 self.size = self.size - 1 # we have effectively removed {doomed_item}
             # end if doomed_item_node is not None:
         # end if self.size != 0
@@ -185,7 +194,7 @@ if __name__ == '__main__':
     t = bs_tree()
     for item in p:
         t.insert(item)
-    
+    p = [5, 1, 9, 0, 4, 7, 3, 2, 6, 8]
     for item in p:
         print(t.generate_list_view(), '\n')
         t.remove(item)
