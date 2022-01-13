@@ -101,7 +101,7 @@ class bs_tree:
                     # search for the largest node in the left subtree
                     # or the smallest node in the right subtree
                     
-                    # I gonna search for the largest in the left subtree
+                    # I'm gonna search for the largest in the left subtree
                     # we go as deep and far right as possible in the left subtree
                     left_largest = doomed_item_node.left
                     while left_largest.right is not None:
@@ -114,23 +114,36 @@ class bs_tree:
                     # now remove left_largest
                     have_left = left_largest.left is not None
                     if have_left:
-                        left_largest.parent.right =    left_largest.left
-                        left_largest.parent.right =    left_largest.parent
-                        left_largest.parent.right.id = '#R'
+                        if left_largest.id == '#L':
+                            # this happens only when the left subtree of doomed_node is a single node, namely left_largest
+                            left_largest.parent.left =        left_largest.left
+                            left_largest.parent.left.parent = left_largest.parent
+                        else:
+                            left_largest.parent.right =        left_largest.left
+                            left_largest.parent.right.parent = left_largest.parent
+                            left_largest.parent.right.id =     '#R'
                     else:
                         # NO CHILDREN AT ALL
-                        left_largest.parent.right.value = None
-                        left_largest.parent.right =       None
+                        if left_largest.id == '#L':
+                            left_largest.parent.left.value = None
+                            left_largest.parent.left =       None
+                        else:
+                            left_largest.parent.right.value = None
+                            left_largest.parent.right =       None
                     # we have removed both {doomed_item} and {left_largest}
+                    del left_largest
                 else:
+                    # either LEFT OR RIGHT, but not BOTH
                     successor = doomed_item_node.left if L else doomed_item_node.right
                     if doomed_id == '#L':
                         doomed_item_node.parent.left = successor
                         if doomed_item_node.parent.left is not None:
+                            doomed_item_node.parent.left.parent = doomed_item_node.parent
                             doomed_item_node.parent.left.id = '#L'
                     else:
                         doomed_item_node.parent.right = successor
                         if doomed_item_node.parent.right is not None:
+                            doomed_item_node.parent.right.parent = doomed_item_node.parent
                             doomed_item_node.parent.right.id = '#R'
                 self.size = self.size - 1 # we have effectively removed {doomed_item}
             # end if doomed_item_node is not None:
