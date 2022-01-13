@@ -98,13 +98,40 @@ class bs_tree:
                 L, R = doomed_item_node.left is not None, doomed_item_node.right is not None
                 if L and R:
                     # BOTH CHILDREN ARE NOT NONE
-                    pass
-                elif L:
-                    # LEFT is NOT None, RIHGT is NONE
-                    pass 
+                    # search for the largest node in the left subtree
+                    # or the smallest node in the right subtree
+                    
+                    # I gonna search for the largest in the left subtree
+                    # we go as deep and far right as possible in the left subtree
+                    left_largest = doomed_item_node.left
+                    while left_largest.right is not None:
+                        left_largest = left_largest.right
+                    
+                    doomed_item_node.value = left_largest.value
+                    
+                    # left_largest can have a left child, or no children at all, but never a right one
+                    
+                    # now remove left_largest
+                    have_left = left_largest.left is not None
+                    if have_left:
+                        left_largest.parent.right =    left_largest.left
+                        left_largest.parent.right =    left_largest.parent
+                        left_largest.parent.right.id = '#R'
+                    else:
+                        # NO CHILDREN AT ALL
+                        left_largest.parent.right.value = None
+                        left_largest.parent.right =       None
+                    # we have removed both {doomed_item} and {left_largest}
                 else:
-                    # LEFT is NONE, RIGHT is NOT NONE
-                    pass
+                    successor = doomed_item_node.left if L else doomed_item_node.right
+                    if doomed_id == '#L':
+                        doomed_item_node.parent.left = successor
+                        if doomed_item_node.parent.left is not None:
+                            doomed_item_node.parent.left.id = '#L'
+                    else:
+                        doomed_item_node.parent.right = successor
+                        if doomed_item_node.parent.right is not None:
+                            doomed_item_node.parent.right.id = '#R'
                 self.size = self.size - 1 # we have effectively removed {doomed_item}
             # end if doomed_item_node is not None:
         # end if self.size != 0
@@ -141,7 +168,7 @@ class bs_tree:
 # end of class bs_tree
 
 if __name__ == '__main__':
-    p = [6, 0, 7, 5, 1, 4, 8, 9, 3, 2]
+    p = [5, 1, 9, 0, 4, 7, 3, 6, 8, 2]
     t = bs_tree()
     for item in p:
         t.insert(item)
