@@ -112,24 +112,22 @@ class bs_tree:
                     # left_largest can have a left child, or no children at all, but never a right one
                     
                     # now remove left_largest
-                    have_left = left_largest.left is not None
-                    if have_left:
-                        if left_largest.id == '#L':
-                            # this happens only when the left subtree of doomed_node is a single node, namely left_largest
-                            left_largest.parent.left =        left_largest.left
+                    # note that left_largest can never have a right child
+                    # because we go as far right as possible in the left subtree of doomed_item_node
+                    
+                    left_largest_successor = left_largest.left
+                    if left_largest.id == '#L':
+                        # this happens only when doomed_item_node has a single-node left subtree
+                        # subtree consisting only of left_largest
+                        left_largest.parent.left = left_largest_successor
+                        if left_largest.parent.left is not None:
                             left_largest.parent.left.parent = left_largest.parent
-                        else:
-                            left_largest.parent.right =        left_largest.left
-                            left_largest.parent.right.parent = left_largest.parent
-                            left_largest.parent.right.id =     '#R'
+                            left_largest.parent.left.id = '#L'
                     else:
-                        # NO CHILDREN AT ALL
-                        if left_largest.id == '#L':
-                            left_largest.parent.left.value = None
-                            left_largest.parent.left =       None
-                        else:
-                            left_largest.parent.right.value = None
-                            left_largest.parent.right =       None
+                        left_largest.parent.right = left_largest_successor
+                        if left_largest.parent.right is not None:
+                            left_largest.parent.right.parent = left_largest.parent
+                            left_largest.parent.right.id = '#R'
                     # we have removed both {doomed_item} and {left_largest}
                     del left_largest
                 else:
@@ -194,7 +192,7 @@ if __name__ == '__main__':
     t = bs_tree()
     for item in p:
         t.insert(item)
-    p = [5, 1, 9, 0, 4, 7, 3, 2, 6, 8]
-    for item in p:
-        print(t.generate_list_view(), '\n')
-        t.remove(item)
+    
+    while len(t) != 0:
+        print(t.generate_list_view())
+        t.remove(t.root.value)
